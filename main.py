@@ -1,7 +1,18 @@
 from individual import Individual
+from data_managment import IndividualDataframe
+from weather import Weather
 import pandas as pd
-column_names = ["Name", "City, State, Zip", "Latitude", "Longitude"]
-df = pd.DataFrame(columns=column_names)
+
+
+def main():
+    pass
+
+
+if __name__ == "__main__":
+    main()
+
+
 John = Individual(name="John")
-print(John.coordinates)
-df = df.iloc[0:0]
+test = Weather(name=John)
+test.openweather_api_pull()
+print(test.sky)
