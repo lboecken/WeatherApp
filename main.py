@@ -1,7 +1,6 @@
 from individual import Individual
-from data_managment import IndividualDataframe
 from weather import Weather
-import pandas as pd
+import pprint
 
 
 def main():
@@ -14,5 +13,4 @@ if __name__ == "__main__":
 
 John = Individual(name="John")
 test = Weather(name=John)
-test.openweather_api_pull()
-print(test.sky)
+pprint.pprint(test.daily)

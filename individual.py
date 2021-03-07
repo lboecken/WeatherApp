@@ -4,13 +4,15 @@ import data_managment
 
 
 class Individual:
-    def __init__(self, name):
+    def __init__(self, name, phone_number=0):
         self.name = name
         self.address = ""
         self.coordinates = {}
+        self.phone_number = phone_number
         self.info_for_dataframe = pd.DataFrame()
         self.get_address()
         self.convert_address_to_coordinates(self.address)
+
 
     def get_address(self):
         if self.address == "":
