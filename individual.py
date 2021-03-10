@@ -1,6 +1,4 @@
 from geopy import ArcGIS
-import pandas as pd
-import data_managment
 
 
 class Individual:
@@ -9,10 +7,10 @@ class Individual:
         self.address = ""
         self.coordinates = {}
         self.phone_number = phone_number
-        self.info_for_dataframe = pd.DataFrame()
+        self.json_package = {}
         self.get_address()
         self.convert_address_to_coordinates(self.address)
-
+        self.prepare_attributes_for_json_dump()
 
     def get_address(self):
         if self.address == "":
@@ -28,13 +26,13 @@ class Individual:
         else:
             pass
 
-    def get_info_for_dataframe(self):
-        if self.info_for_dataframe == pd.DataFrame():
-            self.info_for_dataframe = pd.DataFrame([[self.name,
-                                                     self.address,
-                                                     self.coordinates["latitude"],
-                                                     self.coordinates["longitude"]]],
-                                                   columns=data_managment.column_names)
-        else:
-            pass
+    def get_attributes_for_json_dump(self):
+        self.json_package = {
+            self.name: {
+                "address": self.address,
+                "coordinates": self.coordinates,
+                "phone number": self.phone_number
+            }
+        }
+
 

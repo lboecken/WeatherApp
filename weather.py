@@ -19,8 +19,6 @@ class Weather:
     def openweather_api_pull(self):
         self.weather_api_json = requests.get(
             f"https://api.openweathermap.org/data/2.5/onecall?lat={self.latitude}&lon={self.longitude}&exclude=&appid={self.api_key}&units=imperial").json()
-        pprint.pprint(self.weather_api_json)
-        print("")
         return self.current_weather_update(), self.hourly_weather_update(), self.daily_weather_update()
 
     def current_weather_update(self):
