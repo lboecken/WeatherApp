@@ -4,15 +4,14 @@ import json
 
 # TODO Backend json interaction Class
 
+
 class IndividualDataManager:
     def __init__(self):
         pass
 
-    @staticmethod
-    def add_user():
-        with open("individuals.json", "a") as json_file:
-            p
-            print(json_file)
+    def add_user(self, user):
+        with open("individuals.json") as json_file:
+            data = json.load(json_file)
 
 
 

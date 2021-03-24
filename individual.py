@@ -1,22 +1,22 @@
 from geopy import ArcGIS
 
+class ConstructIndividualFromDict:
+    def __init__(self, dict):
+        pass
+
+class ConstructIndividualFromGEO:
+    def __init__(self):
+
 
 class Individual:
-    def __init__(self, name, phone_number=0):
+    def __init__(self, name, address, phone_number=0):
         self.name = name
-        self.address = ""
+        self.address = address
         self.coordinates = {}
         self.phone_number = phone_number
         self.json_package = {}
-        self.get_address()
         self.convert_address_to_coordinates(self.address)
-        self.prepare_attributes_for_json_dump()
-
-    def get_address(self):
-        if self.address == "":
-            self.address = input("Please enter your city, state, and zip code: ")
-        else:
-            pass
+        self.get_attributes_for_json_dump()
 
     def convert_address_to_coordinates(self, address):
         if self.coordinates == {}:

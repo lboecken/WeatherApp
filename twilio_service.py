@@ -1,9 +1,9 @@
 from twilio.rest import Client
 # TODO Twilio interactive respond (research)
-
+# TWILIO requires a public hosted website to host the app at in order to enable response
 # # Twilio account authentication.
-# account_sid = "AC39bcb788f57cd6240b58284c89470e2e" TODO get new auth_token
-# auth_token = "12adef0e15473b80810c34c15c011d66"
+# account_sid = "" TODO get new auth_token
+# auth_token = ""
 # client = Client(account_sid, auth_token)
 #
 #
