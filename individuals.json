@@ -1,1 +1,22 @@
-{"USERS": {}}
+{
+    "USERS": {
+        "Mary Jane": {
+            "name": "Mary Jane",
+            "address": "Woodstock, GA",
+            "coordinates": {
+                "latitude": 34.102910000000065,
+                "longitude": -84.51874999999995
+            },
+            "phone number": 5555555555
+        },
+        "John Doe": {
+            "name": "John Doe",
+            "address": "Roswell, GA",
+            "coordinates": {
+                "latitude": 34.02167000000003,
+                "longitude": -84.35899999999998
+            },
+            "phone number": 5555555555
+        }
+    }
+}

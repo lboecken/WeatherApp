@@ -1,15 +1,8 @@
 from geopy import ArcGIS
 
-class ConstructIndividualFromDict:
-    def __init__(self, dict):
-        pass
-
-class ConstructIndividualFromGEO:
-    def __init__(self):
-
 
 class Individual:
-    def __init__(self, name, address, phone_number=0):
+    def __init__(self, name, address, phone_number):
         self.name = name
         self.address = address
         self.coordinates = {}
@@ -28,11 +21,9 @@ class Individual:
 
     def get_attributes_for_json_dump(self):
         self.json_package = {
-            self.name: {
-                "address": self.address,
-                "coordinates": self.coordinates,
-                "phone number": self.phone_number
+            "name": self.name,
+            "address": self.address,
+            "coordinates": self.coordinates,
+            "phone number": self.phone_number
             }
-        }
-
 

@@ -1,6 +1,6 @@
-# import pandas as pd
-#import individual
 import json
+import collections
+
 
 # TODO Backend json interaction Class
 
@@ -10,20 +10,37 @@ class IndividualDataManager:
         pass
 
     def add_user(self, user):
-        with open("individuals.json") as json_file:
-            data = json.load(json_file)
+        if self.verify_user_exists_in_json(user):
+            pass
+        else:
+            with open("individuals.json", "r") as json_file:
+                data = json.load(json_file)
+                data["USERS"][user["name"]] = user
 
+            with open("individuals.json", "w") as json_file:
+                json.dump(data, json_file, indent=4)
 
+    def verify_user_exists_in_json(self, user):
+        with open("individuals.json", "r") as json_file:
+            data = dict(json.load(json_file))
+            return data["USERS"].__contains__(user["name"])
 
+    def delete_user(self, user):
+        with open("individuals.json", "r") as json_file:
+            data = dict(json.load(json_file))
+            data["USERS"].__delitem__(user["name"])
 
-    def verify_address_valid(self):
-        pass#check if individual.coordinates["Latitude] or ["Longitude"] exists. (This might need to be in individual)
+        with open("individuals.json", "w") as json_file:
+            json.dump(data, json_file, indent=4)
 
-    def verify_info_not_in_json(self):
-        pass #check if data already in JSON; pass if it is; throw message to user that data already exists and will be overwritten.
+    def update_user_information(self):
+        def update_address():
+            pass
 
-    def check_if_address_is_being_updated(self):
-        pass #this needs to go to twilio -> Ask "would you like to update your address?"
+        def update_phone_number():
+            pass
 
-    def update_some_information(self):
-        pass #create ways to update only part of a user.
+        def update_name():
+            pass
+
+        pass  # create ways to update only part of a user.
