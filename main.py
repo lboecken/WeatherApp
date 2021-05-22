@@ -1,6 +1,5 @@
 from individual import Individual
 from weather import Weather
-from json_managment import IndividualDataManager
 from sqldb import DatabaseManager
 
 def main():
