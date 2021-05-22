@@ -7,7 +7,7 @@ class Individual:
         self.address = address
         self.coordinates = {}
         self.phone_number = phone_number
-        self.json_package = {}
+        self.json_package = {} ## likely to be droppped once SQL interaction is worked out.
         self.convert_address_to_coordinates(self.address)
         self.get_attributes_for_json_dump()
 
@@ -19,7 +19,7 @@ class Individual:
         else:
             pass
 
-    def get_attributes_for_json_dump(self):
+    def get_attributes_for_json_dump(self): ##Likely to be dropped once SQL interaction is sorted out
         self.json_package = {
             "name": self.name,
             "address": self.address,
