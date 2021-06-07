@@ -1,9 +1,10 @@
 import requests
 import time
+import os
 
 
 class Weather:
-    api_key = "6fc81eb8419eb5f802d034d404388e79"
+    api_key = os.environ['WeatherApiKey']
 
     def __init__(self, name):
         self.latitude = name.coordinates["latitude"]

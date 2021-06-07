@@ -34,7 +34,7 @@ class DatabaseManager:
     def update_message_for_user(self):
         pass
 
-    def check_for_next_message_to_send(self):
+    def check_for_next_message_to_send(self): #will be run by Heroku Chron job every 1/5 minutes
         pass
 
     def pass_message_data_to_twilio_for_sending(self):
