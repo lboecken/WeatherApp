@@ -28,10 +28,10 @@ class DatabaseManager:
             location_info)
         connection_to_db.commit()
 
-    def update_location_for_user(self):
+    def delete_location_for_user(self):
         pass
 
-    def update_message_for_user(self):
+    def delete_message_for_user(self):
         pass
 
     def check_for_next_message_to_send(self): #will be run by Heroku Chron job every 1/5 minutes

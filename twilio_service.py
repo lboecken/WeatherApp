@@ -1,16 +1,76 @@
+import os
 from twilio.rest import Client
-# TODO Twilio interactive respond (research)
-# TWILIO requires a public hosted website to host the app at in order to enable response
-# # Twilio account authentication.
-# account_sid = "" TODO get new auth_token
-# auth_token = ""
-# client = Client(account_sid, auth_token)
-#
-#
-#
-# message = client.messages \
-#     .create(
-#     body=f"The temperature today is {weather_api_json['main']['temp']} degrees Fahrenheit in {address}. Enjoy! TEST3",
-#     from_="+14704358197",
-#     to="+14045094520"
-# )
+from collections import OrderedDict
+import datetime
+
+account_sid = os.environ['TWILIO_ACCOUNT_SID']
+auth_token = os.environ['TWILIO_AUTH_TOKEN']
+client = Client(account_sid, auth_token)
+
+
+class WeatherSMS:
+
+    def __init__(self):
+        pass
+
+    @staticmethod
+    def current(weather_info, message_info):
+        client.messages.create(
+            from_='14704358197',
+            body=
+            f'''Hello {message_info["Name"]}, The weather at {message_info["Location_Name"]} is the following currently:
+    CURRENT TEMPERATURE: {weather_info["current_temp"]}
+    IT FEES LIKE: {weather_info["feels_like"]}
+    DESCRIPTION: {weather_info["description"]}
+    HUMIDITY: {weather_info["humidity"]}
+    SUNRISE: {datetime.datetime.fromtimestamp(weather_info["sunrise"]).strftime("%I:%M %p")}
+    SUNSET: {datetime.datetime.fromtimestamp(weather_info["sunset"]).strftime("%I:%M %p")}
+            ''',
+            to=message_info["Phone_Number"]
+        )
+
+    @staticmethod
+    def hourly(message_info, weather_info):
+        client.messages.create(
+            from_='14704358197',
+            body=
+            f'''Hello {message_info["Name"]}, The weather at {message_info["Location_Name"]} is the following for the next 24 hours:
+    
+    ''',
+            to=message_info["Phone_Number"]
+        )
+
+    @staticmethod
+    def daily(message_info, weather_info):
+        client.messages.create(
+            from_='14704358197',
+            body=
+            f'''Hello {message_info["Name"]}, The weather at {message_info["Location_Name"]} is the following for today:
+    MORNING: {weather_info["morn"]}
+    DAY: {weather_info["day"]}
+    EVENING {weather_info["eve"]}
+    NIGHT: {weather_info["night"]}
+    HIGH: {weather_info["high"]}
+    LOW: {weather_info["low"]}
+    FORECAST: {weather_info["description"]}
+            ''',
+            to=message_info["Phone_Number"]
+        )
+
+    @staticmethod
+    def weekly(message_info, weather_info=OrderedDict):
+        for key in weather_info.keys():
+            client.messages.create(
+                from_='14704358197',
+                body=
+                f'''Hello {message_info["Name"]}, The weather at {message_info["Location_Name"]} is the following for {weather_info[key]["day of week"]}:
+    MORNING: {weather_info[key]["morn"]}
+    DAY: {weather_info[key]["day"]}
+    EVENING {weather_info[key]["eve"]}
+    NIGHT: {weather_info[key]["night"]}
+    HIGH: {weather_info[key]["high"]}
+    LOW: {weather_info[key]["low"]}
+    FORECAST: {weather_info[key]["description"]}
+                        ''',
+                to=message_info["Phone_Number"]
+            )
