@@ -9,7 +9,7 @@ class DatabaseManager:
     def add_user(self, user_info):
         connection_to_db = sqlite3.connect("test.db")
         connection_cursor = connection_to_db.cursor()
-        connection_cursor.execute("INSERT INTO main ('NAME', 'PHONENUMBER') values (?, ?)", user_info)
+        connection_cursor.execute("INSERT INTO main ('NAME', 'PHONE_NUMBER', 'TIME_ZONE') values (?, ?, ?)", user_info)
         connection_to_db.commit()
 
     def add_new_location_for_user(self, location_info):
@@ -20,12 +20,12 @@ class DatabaseManager:
             "values (?, ?, ?, ?, ?)", location_info)
         connection_to_db.commit()
 
-    def add_new_message_for_user(self):
+    def add_new_message_for_user(self, message_info):
         connection_to_db = sqlite3.connect("test.db")
         connection_cursor = connection_to_db.cursor()
         connection_cursor.execute(
             "INSERT INTO locations ('USER_ID', 'ADDRESS_NAME', 'ADDRESS', 'LATITUDE', 'LONGITUDE') values (?, ?, ?, ?, ?)",
-            location_info)
+            message_info)
         connection_to_db.commit()
 
     def delete_location_for_user(self):
