@@ -6,14 +6,21 @@ import pprint
 
 
 def main():
-    user_info = {"Name": "Lennart", "Location_Name": "Home", "Phone_Number": "14045094520"}
-    weather = Weather()
-    weather.openweather_api_pull(34.23, -80.23)
-    WeatherSMS.weekly(user_info, weather.daily)
+    message_info = (1,1,1,1,0,1624492299)
+    x = 0
+    db = DatabaseManager()
+    # while x < 7:
+    #     db.add_new_message_for_user(message_info)
+    #     x += 1
+    db.grab_next_messages_to_send()
+
+
+
+
 
 
 if __name__ == "__main__":
     main()
 
 
-print('Hello World')
+
