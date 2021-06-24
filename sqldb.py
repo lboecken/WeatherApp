@@ -68,6 +68,7 @@ class DatabaseManager:
             connection_to_db.close()
 
     def send_next_message_info_to_twilio(self, message_info):
+
         pass
 
     def update_timeofnextmessage_in_Database_for_last_sent_message(self, message_info):
