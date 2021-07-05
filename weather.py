@@ -4,43 +4,20 @@ import os
 from collections import OrderedDict
 
 
-class Weather:
+class WeatherInformation:
     api_key = os.environ['WeatherApiKey']
 
     def __init__(self):
         self.weather_api_json = None
-        self.current = {}
-        self.hourly = {}
         self.daily = {}
 
     # noinspection SpellCheckingInspection
-    def openweather_api_pull(self, latitude, longitude):
+    def openweather_api_pull(self, message_info_from_db):
         self.weather_api_json = requests.get(
-            f"https://api.openweathermap.org/data/2.5/onecall?lat={latitude}&lon={longitude}&exclude=&appid={self.api_key}&units=imperial").json()
-        return self.current_weather_update(), self.hourly_weather_update(), self.daily_weather_update()
+            f"https://api.openweathermap.org/data/2.5/onecall?lat={message_info_from_db[3]}&lon={message_info_from_db[4]}&exclude=&appid={self.api_key}&units=imperial").json()
+        return self.prepare_and_organize_weather_information()
 
-    def current_weather_update(self):
-        self.current = {"current_temp": round(self.weather_api_json["current"]["temp"]),
-                        "feels_like": round(self.weather_api_json["current"]["feels_like"]),
-                        "description": self.weather_api_json["current"]["weather"][0]["description"],
-                        "humidity": str(self.weather_api_json["current"]["humidity"]) + "%",
-                        "sunrise": (self.weather_api_json["current"]["sunrise"]),
-                        "sunset": (self.weather_api_json["current"]["sunset"])}
-
-    def hourly_weather_update(self):
-        for i in range(0, 48):
-            self.hourly.update(
-                {i:
-                     {'current_temp': round(self.weather_api_json["hourly"][i]["temp"]),
-                      "feels_like": round(self.weather_api_json["hourly"][i]["feels_like"]),
-                      "description": self.weather_api_json["hourly"][i]["weather"][0]["description"],
-                      "humidity": str(self.weather_api_json["hourly"][i]["humidity"]) + "%",
-                      "uvi": self.weather_api_json["hourly"][i]["uvi"]
-                      }
-                 }
-            )
-
-    def daily_weather_update(self):
+    def prepare_and_organize_weather_information(self):
         for i in range(0, 8):
             self.daily.update(
                 OrderedDict({self.determine_date(i):
@@ -75,7 +52,6 @@ class Weather:
                       }
                  }
             )
-        except:
-            KeyError
+        except KeyError:
             return "NA"
 

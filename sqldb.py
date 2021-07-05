@@ -1,5 +1,6 @@
 import sqlite3
 import time
+from ClassManager import class_manager
 
 
 class DatabaseManager:
@@ -11,44 +12,27 @@ class DatabaseManager:
         connection_to_db = sqlite3.connect("test.db")
         connection_cursor = connection_to_db.cursor()
         connection_cursor.execute(
-            "INSERT INTO users ('NAME', 'PHONENUMBER', 'TIMEZONE') values (?, ?, ?)",
+            "INSERT INTO users ('NAME', 'PHONE_NUMBER', 'TIMEZONE') values (?, ?, ?)",
             user_info)
-        connection_to_db.commit()
-        connection_to_db.close()
-
-    def add_new_location_for_user(self, location_info):
-        connection_to_db = sqlite3.connect("test.db")
-        connection_cursor = connection_to_db.cursor()
-        connection_cursor.execute(
-            "INSERT INTO locations "
-            "('USER_ID', 'ADDRESS_NAME', 'ADDRESS', 'LATITUDE', 'LONGITUDE') "
-            "values (?, ?, ?, ?, ?)", location_info)
         connection_to_db.commit()
         connection_to_db.close()
 
     def add_new_message_for_user(self, message_info):
         connection_to_db = sqlite3.connect("test.db")
-        connection_cursor = connection_to_db.cursor()
-        connection_cursor.execute(
+        cursor = connection_to_db.cursor()
+        cursor.execute(
             "INSERT INTO message"
-            "('USER_ID', 'LOCATION_ID', 'WEEKDAY', 'TIME_OF_DAY', 'REPEAT_FACTOR', 'TIME_OF_NEXT_MESSAGE') "
-            "values (?, ?, ?, ?, ?, ?)", message_info)
+            "('USER_ID', 'ADDRESS', 'LATITUDE', 'LONGITUDE', 'WEATHER_INFORMATION', "
+            "'MONDAY', 'TUESDAY', 'WEDNESDAY', 'THURSDAY', 'FRIDAY', 'SATURDAY', 'SUNDAY', 'TIME_OF_DAY') "
+            "values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", message_info)
         connection_to_db.commit()
         connection_to_db.close()
 
-    def delete_location_for_user(self, name_of_location):
+    def delete_message_for_user(self, message_id):
         connection_to_db = sqlite3.connect("test.db")
-        connection_cursor = connection_to_db.cursor()
-        connection_cursor.execute(
-            "DELETE FROM locations WHERE ADDRESS_NAME = ?", name_of_location)
-        connection_to_db.commit()
-        connection_to_db.close()
-
-    def delete_message_for_user(self, nickname_of_message):
-        connection_to_db = sqlite3.connect("test.db")
-        connection_cursor = connection_to_db.cursor()
-        connection_cursor.execute(
-            "DELETE FROM message WHERE NICKNAME = ?", nickname_of_message)
+        cursor = connection_to_db.cursor()
+        cursor.execute(
+            "DELETE FROM messages WHERE MESSAGE_ID = ?", message_id)
         connection_to_db.commit()
         connection_to_db.close()
         pass
@@ -56,30 +40,19 @@ class DatabaseManager:
     def grab_next_messages_to_send(self):
         current_time_in_seconds_since_epoch = int(time.time())
         connection_to_db = sqlite3.connect("test.db")
-        connection_cursor = connection_to_db.cursor()
-        next_messages_to_send = list(connection_cursor.execute(
-            "SELECT * FROM message WHERE TIME_OF_NEXT_MESSAGE < ?", (str({current_time_in_seconds_since_epoch + 59}),)))
+        cursor = connection_to_db.cursor()
+        cursor.execute(
+            #this needs to be altered to function based of the logic of days of the week & time)
+            "SELECT * FROM message WHERE TIME_OF_NEXT_MESSAGE < ?", (str({current_time_in_seconds_since_epoch + 59}),))
+        next_messages_to_send = cursor.fetchall()
         if not next_messages_to_send:
             pass
         else:
             for x in next_messages_to_send:
-                self.send_next_message_info_to_twilio(x)
-                self.update_timeofnextmessage_in_Database_for_last_sent_message(x)
+                class_manager.weatherapimanager.openweather_api_pull(x)
+                class_manager.twilioservicemanager.
             connection_to_db.close()
 
-    def send_next_message_info_to_twilio(self, message_info):
-
-        pass
-
-    def update_timeofnextmessage_in_Database_for_last_sent_message(self, message_info):
-        connection_to_db = sqlite3.connect("test.db")
-        connection_cursor = connection_to_db.cursor()
-        if message_info[5] == 0:
-            connection_cursor.execute('DELETE FROM message WHERE MESSAGE_ID = ?', (message_info[0],))
-            connection_to_db.commit()
-            connection_to_db.close()
-        else:
-            pass
 
 
 

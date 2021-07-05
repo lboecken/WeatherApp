@@ -1,44 +1,20 @@
 import os
 from twilio.rest import Client
 from collections import OrderedDict
-import datetime
+from ClassManager import class_manager
 
 account_sid = os.environ['TWILIO_ACCOUNT_SID']
 auth_token = os.environ['TWILIO_AUTH_TOKEN']
 client = Client(account_sid, auth_token)
 
 
-class WeatherSMS:
+class WeatherSMSPreparerAndSender:
 
     def __init__(self):
-        pass
 
-    @staticmethod
-    def current(weather_info, message_info):
-        client.messages.create(
-            from_='14704358197',
-            body=
-            f'''Hello {message_info["Name"]}, The weather at {message_info["Location_Name"]} is the following currently:
-    CURRENT TEMPERATURE: {weather_info["current_temp"]}
-    IT FEES LIKE: {weather_info["feels_like"]}
-    DESCRIPTION: {weather_info["description"]}
-    HUMIDITY: {weather_info["humidity"]}
-    SUNRISE: {datetime.datetime.fromtimestamp(weather_info["sunrise"]).strftime("%I:%M %p")}
-    SUNSET: {datetime.datetime.fromtimestamp(weather_info["sunset"]).strftime("%I:%M %p")}
-            ''',
-            to=message_info["Phone_Number"]
-        )
+    def determine_what_weather_information_template_to_use(self, next_message_to_send):
+        if next_message_to_send[5] == "Daily"
 
-    @staticmethod
-    def hourly(message_info, weather_info):
-        client.messages.create(
-            from_='14704358197',
-            body=
-            f'''Hello {message_info["Name"]}, The weather at {message_info["Location_Name"]} is the following for the next 24 hours:
-    
-    ''',
-            to=message_info["Phone_Number"]
-        )
 
     @staticmethod
     def daily(message_info, weather_info):
