@@ -9,17 +9,18 @@ class WeatherInformation:
 
     def __init__(self):
         self.weather_api_json = None
-        self.daily = {}
+        self.seven_day_weather_information = {}
+        self.todays_weather_information = {}
 
     # noinspection SpellCheckingInspection
     def openweather_api_pull(self, message_info_from_db):
         self.weather_api_json = requests.get(
-            f"https://api.openweathermap.org/data/2.5/onecall?lat={message_info_from_db[3]}&lon={message_info_from_db[4]}&exclude=&appid={self.api_key}&units=imperial").json()
-        return self.prepare_and_organize_weather_information()
+            f"https://api.openweathermap.org/data/2.5/onecall?lat={message_info_from_db[4]}&lon={message_info_from_db[5]}&exclude=&appid={self.api_key}&units=imperial").json()
+        return self.prepare_seven_day_weather_information(), self.prepare_today_weather_information()
 
-    def prepare_and_organize_weather_information(self):
+    def prepare_seven_day_weather_information(self):
         for i in range(0, 8):
-            self.daily.update(
+            self.seven_day_weather_information.update(
                 OrderedDict({self.determine_date(i):
                      {'morn': round(self.weather_api_json["daily"][i]["temp"]["morn"]),
                       'day': round(self.weather_api_json["daily"][i]["temp"]["day"]),
@@ -36,6 +37,20 @@ class WeatherInformation:
                  })
             )
 
+    def prepare_today_weather_information(self):
+        self.todays_weather_information = {
+            'morn': round(self.weather_api_json["daily"][0]["temp"]["morn"]),
+            'day': round(self.weather_api_json["daily"][0]["temp"]["day"]),
+            'eve': round(self.weather_api_json["daily"][0]["temp"]["eve"]),
+            'night': round(self.weather_api_json["daily"][0]["temp"]["night"]),
+            'high': round(self.weather_api_json["daily"][0]["temp"]["max"]),
+            'low': round(self.weather_api_json["daily"][0]["temp"]["min"]),
+            'description': self.weather_api_json["daily"][0]["weather"][0]["description"],
+            'humidity': self.weather_api_json["daily"][0]["humidity"],
+            'uvi': self.weather_api_json["daily"][0]["uvi"],
+            'rain': self.check_if_rain_available(0)
+                      }
+
     def determine_date(self, i):
         date_information = time.localtime(self.weather_api_json["daily"][i]["dt"])
         return time.strftime('%Y%m%d', date_information)
@@ -46,7 +61,7 @@ class WeatherInformation:
 
     def check_if_rain_available(self, i):
         try:
-            self.daily.update(
+            self.seven_day_weather_information.update(
                 {self.determine_date(i):
                      {"rain": self.weather_api_json["daily"][i]["rain"]
                       }

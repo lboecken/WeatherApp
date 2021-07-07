@@ -1,6 +1,6 @@
 import sqlite3
+import ClassManager
 import time
-from ClassManager import class_manager
 
 
 class DatabaseManager:
@@ -38,19 +38,18 @@ class DatabaseManager:
         pass
 
     def grab_next_messages_to_send(self):
-        current_time_in_seconds_since_epoch = int(time.time())
         connection_to_db = sqlite3.connect("test.db")
         cursor = connection_to_db.cursor()
         cursor.execute(
             #this needs to be altered to function based of the logic of days of the week & time)
-            "SELECT * FROM message WHERE TIME_OF_NEXT_MESSAGE < ?", (str({current_time_in_seconds_since_epoch + 59}),))
+            "SELECT * FROM messages INNER JOIN USERS ON MESSAGES.USER_ID = USERS.USER_ID")
         next_messages_to_send = cursor.fetchall()
         if not next_messages_to_send:
             pass
         else:
             for x in next_messages_to_send:
-                class_manager.weatherapimanager.openweather_api_pull(x)
-                class_manager.twilioservicemanager.
+                ClassManager.class_manager.weatherapimanager.openweather_api_pull(x)
+                ClassManager.class_manager.twilioservicemanager.determine_what_weather_information_template_to_use(x)
             connection_to_db.close()
 
 
