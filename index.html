@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <!--HEADER-->
+    <header id="header">
+        <h1>Weather SMS Service</h1>
+        <h3>By: Lennart Boecken</h3>
+        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Aliquid eos repellat itaque aut ad qui eum enim adipisci consectetur similique. Temporibus fuga nulla doloremque debitis nihil facilis eius quo hic?</p>
+    </header>
+    <!--NEW MESSAGE FORM-->
+    <section>
+        <form action="">
+        <div>
+            <label for="address"> <strong>Address Information</strong></label>
+            <input type="text" name="address" id="address" placeholder=" 55 Peachtree Road....">
+            <br>
+            <label for="address_name"> <strong>Address Name (optional)</strong></label>
+            <input type="text" name="address" id="address" placeholder="Home">
+            
+        </div>
+        <div>
+            <label for="report_type"> <strong> Report Type </strong></label>
+            <input type="radio" name="report_type" id="report_type" value="DAILY">DAILY
+            <input type="radio" name="report_type" id="report_type" value="7_DAY"> 7-DAY
+        </div>
+        <div>
+            <label for="weekdays"> <strong> Weekdays </strong></label>
+            <input type="checkbox" name="weekdays" id="weekdays" value="Monday">Monday
+            <input type="checkbox" name="weekdays" id="weekdays" value="Tuesday"> Tuesday
+            <input type="checkbox" name="weekdays" id="weekdays" value="Wednesday"> Wednesday
+            <input type="checkbox" name="weekdays" id="weekdays" value="Thursday"> Thursday
+            <input type="checkbox" name="weekdays" id="weekdays" value="Friday"> Friday
+            <input type="checkbox" name="weekdays" id="weekdays" value="Saturday"> Saturday
+            <input type="checkbox" name="weekdays" id="weekdays" value="Sunday"> Sunday
+        </div>
+        <div>
+            <label for="time_of_day"><strong>Time of Day</strong></label>
+            <input type="time" name="time_of_day" id="time_of_day">
+        </div>
+        <div>
+            <button type="submit">Submit</button>
+            <button type="reset">Reset</button>
+        </div>
+        </form>
+                
+    </section>
+</body>
+</html>
