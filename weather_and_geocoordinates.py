@@ -2,6 +2,13 @@ import requests
 import time
 import os
 from collections import OrderedDict
+from geopy import ArcGIS
+
+
+def Address_to_coordinates_converter(address):
+    converter =  ArcGIS()
+    coordinates = [converter.geocode(address).latitude, converter.geocode(address).longitude]
+    return coordinates
 
 
 class WeatherInformation:
@@ -31,7 +38,7 @@ class WeatherInformation:
                       'description': self.weather_api_json["daily"][i]["weather"][0]["description"],
                       'humidity': self.weather_api_json["daily"][i]["humidity"],
                       'uvi': self.weather_api_json["daily"][i]["uvi"],
-                      'rain': self.check_if_rain_available(i),
+                      'rain': self.check_if_rain_information_is_available(i),
                       'day of week': self.determine_day_of_week(i)
                       }
                  })
@@ -48,7 +55,7 @@ class WeatherInformation:
             'description': self.weather_api_json["daily"][0]["weather"][0]["description"],
             'humidity': self.weather_api_json["daily"][0]["humidity"],
             'uvi': self.weather_api_json["daily"][0]["uvi"],
-            'rain': self.check_if_rain_available(0)
+            'rain': self.check_if_rain_information_is_available(0)
                       }
 
     def determine_date(self, i):
@@ -59,7 +66,7 @@ class WeatherInformation:
         date_information = time.localtime(self.weather_api_json["daily"][i]["dt"])
         return time.strftime('%A, %B %d', date_information)
 
-    def check_if_rain_available(self, i):
+    def check_if_rain_information_is_available(self, i):
         try:
             self.seven_day_weather_information.update(
                 {self.determine_date(i):

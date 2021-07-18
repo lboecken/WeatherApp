@@ -1,7 +1,7 @@
 import os
 from twilio.rest import Client
 from collections import OrderedDict
-import ClassManager
+import ClassManager as CM
 
 account_sid = os.environ['TWILIO_ACCOUNT_SID']
 auth_token = os.environ['TWILIO_AUTH_TOKEN']
@@ -13,9 +13,9 @@ class WeatherSMSPreparerAndSender:
 
     def determine_what_weather_information_template_to_use(self, next_message_to_send):
         if next_message_to_send[6] == "DAILY":
-            return self.send_out_daily_weather_report(next_message_to_send, ClassManager.class_manager.weatherapimanager.todays_weather_information)
+            return self.send_out_daily_weather_report(next_message_to_send, CM.class_manager.weatherapimanager.todays_weather_information)
         elif next_message_to_send[6] == "7_DAY_REPORT":
-            return self.send_out_seven_day_weather_report(next_message_to_send, ClassManager.class_manager.weatherapimanager.seven_day_weather_information)
+            return self.send_out_seven_day_weather_report(next_message_to_send, CM.class_manager.weatherapimanager.seven_day_weather_information)
 
     @staticmethod
     def send_out_daily_weather_report(message_info, weather_info):
