@@ -9,6 +9,7 @@ class DatabaseManager:
     def __init__(self):
         pass
 
+
     def add_user(self, user_info):
         connection_to_db = sqlite3.connect("test.db")
         connection_cursor = connection_to_db.cursor()
@@ -18,15 +19,26 @@ class DatabaseManager:
         connection_to_db.commit()
         connection_to_db.close()
 
-    def add_new_message_for_user_to_db(self, message_info):
-        #coordinates = address_to_coordinates_converter(message_info())
+    def prepare_data_for_insert_into_sql_db(self,
+                                            user_id: int,
+                                            address: str,
+                                            address_name:str,
+                                            coordinates: dict,
+                                            weather_info: str,
+                                            days: tuple,
+                                            time_of_day: str):
+        data = (user_id,address,address_name, coordinates['latitude'], coordinates['longitude'], weather_info, days[0],
+                days[1], days[2], days[3], days[4], days[5], days[6], time_of_day)
+        return self.add_new_message_for_user_to_db(data)
+
+    def add_new_message_for_user_to_db(self, data):
         connection_to_db = sqlite3.connect("test.db")
         cursor = connection_to_db.cursor()
-        cursor.execute(
-            "INSERT INTO message"
-            "('USER_ID', 'ADDRESS', 'LATITUDE', 'LONGITUDE', 'WEATHER_INFORMATION', "
-            "'MONDAY', 'TUESDAY', 'WEDNESDAY', 'THURSDAY', 'FRIDAY', 'SATURDAY', 'SUNDAY', 'TIME_OF_DAY') "
-            "values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", message_info)
+        sql = '''INSERT INTO message
+            ('USER_ID', 'ADDRESS', 'ADDRESS_NAME', 'LATITUDE', 'LONGITUDE', 'WEATHER_INFORMATION', 
+            'MONDAY', 'TUESDAY', 'WEDNESDAY', 'THURSDAY', 'FRIDAY', 'SATURDAY', 'SUNDAY', 'TIME_OF_DAY') 
+            values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)'''
+        cursor.execute(sql, data)
         connection_to_db.commit()
         connection_to_db.close()
 
@@ -39,7 +51,7 @@ class DatabaseManager:
         connection_to_db.close()
         pass
 
-    def determine_what_messages_need_to_be_pulled_next(self):
+    def lookup_time_and_date_to_determine_next_messages_to_send_out(self):
         x = datetime.datetime.now()
         time_for_next_messages = x.strftime("%H:%M")
         day_for_next_messages = x.strftime('%A').upper()

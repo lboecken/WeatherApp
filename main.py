@@ -1,8 +1,7 @@
 import ClassManager
-from app.front_end import website
 
 def main():
-    website.run()
+    pass
 
 if __name__ == "__main__":
     main()

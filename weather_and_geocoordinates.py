@@ -7,7 +7,7 @@ from geopy import ArcGIS
 
 def address_to_coordinates_converter(address):
     converter = ArcGIS()
-    coordinates = [converter.geocode(address).latitude, converter.geocode(address).longitude]
+    coordinates = {'latitude': converter.geocode(address).latitude, 'longitude': converter.geocode(address).longitude}
     return coordinates
 
 
@@ -19,7 +19,6 @@ class WeatherInformation:
         self.seven_day_weather_information = {}
         self.todays_weather_information = {}
 
-    # noinspection SpellCheckingInspection
     def openweather_api_pull(self, message_info_from_db):
         self.weather_api_json = requests.get(
             f"https://api.openweathermap.org/data/2.5/onecall?lat={message_info_from_db[4]}&lon={message_info_from_db[5]}&exclude=&appid={self.api_key}&units=imperial").json()

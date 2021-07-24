@@ -17,8 +17,7 @@ class WeatherSMSPreparerAndSender:
         elif next_message_to_send[6] == "7_DAY_REPORT":
             return self.send_out_seven_day_weather_report(next_message_to_send, CM.class_manager.weatherapimanager.seven_day_weather_information)
 
-    @staticmethod
-    def send_out_daily_weather_report(message_info, weather_info):
+    def send_out_daily_weather_report(self, message_info, weather_info):
         client.messages.create(
             from_= outbound_phone_number,
             body=
@@ -34,8 +33,7 @@ class WeatherSMSPreparerAndSender:
             to=message_info[17]
         )
 
-    @staticmethod
-    def send_out_seven_day_weather_report(message_info, weather_info=OrderedDict):
+    def send_out_seven_day_weather_report(self, message_info, weather_info=OrderedDict):
         for key in weather_info.keys():
             client.messages.create(
                 from_= outbound_phone_number,
