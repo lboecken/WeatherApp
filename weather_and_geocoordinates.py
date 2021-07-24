@@ -5,8 +5,8 @@ from collections import OrderedDict
 from geopy import ArcGIS
 
 
-def Address_to_coordinates_converter(address):
-    converter =  ArcGIS()
+def address_to_coordinates_converter(address):
+    converter = ArcGIS()
     coordinates = [converter.geocode(address).latitude, converter.geocode(address).longitude]
     return coordinates
 

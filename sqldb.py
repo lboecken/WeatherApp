@@ -1,6 +1,7 @@
 import sqlite3
 import ClassManager as CM
 import datetime
+from weather_and_geocoordinates import address_to_coordinates_converter
 
 
 class DatabaseManager:
@@ -18,6 +19,7 @@ class DatabaseManager:
         connection_to_db.close()
 
     def add_new_message_for_user_to_db(self, message_info):
+        #coordinates = address_to_coordinates_converter(message_info())
         connection_to_db = sqlite3.connect("test.db")
         cursor = connection_to_db.cursor()
         cursor.execute(

@@ -22,7 +22,12 @@
             <br>
             <label for="address_name"> <strong>Address Name (optional)</strong></label>
             <input type="text" name="address" id="address_name" placeholder="Home">
-            
+        </div>
+        <div>
+            <label for="latitude"><strong> Latitude</strong></label>
+            <input type="text" onchange="UpdateLatitude()">
+            <label for="longitude"><strong> Longitude</strong></label>
+            <input type="text" onchange="UpdateLongitude()">
         </div>
         <div>
             <label for="report_type"> <strong> Report Type </strong></label>
