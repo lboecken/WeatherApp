@@ -63,9 +63,10 @@ class DatabaseManager:
     def grab_next_messages_to_send_from_db_and_handoff(self, time_for_next_messages, day_for_next_messages):
         connection_to_db = psycopg2.connect(database_url)
         cursor = connection_to_db.cursor()
-        cursor.execute(
-            f"SELECT * FROM messages INNER JOIN USERS ON MESSAGES.USER_ID = USERS.USER_ID WHERE TIME_OF_DAY = ? AND {day_for_next_messages} = 1", (time_for_next_messages, ))
-        #No the above is not recommended but no user has access to this function to inject something & it works. I'll get better at this later.
+        sql = '''SELECT * FROM messages 
+                INNER JOIN USERS ON MESSAGES.USER_ID = USERS.USER_ID 
+                WHERE TIME_OF_DAY = %s AND {} = 1'''.format(day_for_next_messages)
+        cursor.execute(sql, (time_for_next_messages,))
         next_messages_to_send = cursor.fetchall()
         if not next_messages_to_send:
             pass
