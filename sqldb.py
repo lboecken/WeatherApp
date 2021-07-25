@@ -1,8 +1,10 @@
-import sqlite3
 import ClassManager as CM
 import datetime
 from weather_and_geocoordinates import address_to_coordinates_converter
+import psycopg2
+import os
 
+database_url = os.environ['DATABASE_URL']
 
 class DatabaseManager:
 
@@ -11,11 +13,12 @@ class DatabaseManager:
 
 
     def add_user(self, user_info):
-        connection_to_db = sqlite3.connect("test.db")
+        connection_to_db = psycopg2.connect(database_url)
         connection_cursor = connection_to_db.cursor()
-        connection_cursor.execute(
-            "INSERT INTO users ('NAME', 'PHONE_NUMBER', 'TIMEZONE') values (?, ?, ?)",
-            user_info)
+        sql = '''INSERT INTO USERS 
+        (NAME, PHONE_NUMBER, TIMEZONE) 
+        VALUES (%s, %s, %s)'''
+        connection_cursor.execute(sql, user_info)
         connection_to_db.commit()
         connection_to_db.close()
 
@@ -32,18 +35,18 @@ class DatabaseManager:
         return self.add_new_message_for_user_to_db(data)
 
     def add_new_message_for_user_to_db(self, data):
-        connection_to_db = sqlite3.connect("test.db")
+        connection_to_db = psycopg2.connect(database_url)
         cursor = connection_to_db.cursor()
-        sql = '''INSERT INTO message
-            ('USER_ID', 'ADDRESS', 'ADDRESS_NAME', 'LATITUDE', 'LONGITUDE', 'WEATHER_INFORMATION', 
-            'MONDAY', 'TUESDAY', 'WEDNESDAY', 'THURSDAY', 'FRIDAY', 'SATURDAY', 'SUNDAY', 'TIME_OF_DAY') 
-            values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)'''
+        sql = '''INSERT INTO messages
+            (USER_ID, ADDRESS, ADDRESS_NAME, LATITUDE, LONGITUDE, WEATHER_INFORMATION, 
+            MONDAY, TUESDAY, WEDNESDAY, THURSDAY, FRIDAY, SATURDAY, SUNDAY, TIME_OF_DAY) 
+            values (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)'''
         cursor.execute(sql, data)
         connection_to_db.commit()
         connection_to_db.close()
 
     def delete_message_for_user_from_db(self, message_id):
-        connection_to_db = sqlite3.connect("test.db")
+        connection_to_db = psycopg2.connect(database_url)
         cursor = connection_to_db.cursor()
         cursor.execute(
             "DELETE FROM messages WHERE MESSAGE_ID = ?", message_id)
@@ -58,7 +61,7 @@ class DatabaseManager:
         return self.grab_next_messages_to_send_from_db_and_handoff(time_for_next_messages, day_for_next_messages)
 
     def grab_next_messages_to_send_from_db_and_handoff(self, time_for_next_messages, day_for_next_messages):
-        connection_to_db = sqlite3.connect("test.db")
+        connection_to_db = psycopg2.connect(database_url)
         cursor = connection_to_db.cursor()
         cursor.execute(
             f"SELECT * FROM messages INNER JOIN USERS ON MESSAGES.USER_ID = USERS.USER_ID WHERE TIME_OF_DAY = ? AND {day_for_next_messages} = 1", (time_for_next_messages, ))
