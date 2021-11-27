@@ -1,7 +1,7 @@
-# improved-octo-rotary-phone
-WeatherApp 
+#WeatherApp 
 
-Scope
-Create a SMS based program that takes a users name, city/state/zip and pulls their local weather.
+This is a Python, Postgres, Heroku App that sends out scheduled weather messages with the requested information by the user. 
 
-This is to run on a scheduled basis while also being able to run when the user sends a text requesting information. 
+It stores what information is required in a db that is checked every minute with a cron job. 
+If the cron jobs finds a match, it will send this information to the python backend. First the weather information is retrieved from the openWeatherAPI.
+Then the returning data is formatted to be sent over to Twilio which then sends out an SMS to the provided phone number. 
